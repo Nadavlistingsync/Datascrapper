@@ -29,6 +29,8 @@ export default function SearchEngine() {
     setResults(null);
 
     try {
+      console.log('Sending search request:', { query: query.trim(), maxResults, searchEngines });
+      
       const response = await fetch('/api/search-scrape', {
         method: 'POST',
         headers: {
@@ -41,14 +43,43 @@ export default function SearchEngine() {
         }),
       });
 
-      const data = await response.json();
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
 
+      // Check if response is ok
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to perform search');
+        const errorText = await response.text();
+        console.error('Response error text:', errorText);
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (parseError) {
+          console.error('Failed to parse error response:', parseError);
+          throw new Error(`HTTP ${response.status}: ${errorText || 'Unknown error'}`);
+        }
+        
+        throw new Error(errorData.error || errorData.details || 'Failed to perform search');
+      }
+
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        throw new Error('Invalid JSON response from server');
+      }
+
+      if (!data.success) {
+        throw new Error(data.error || 'Search failed');
       }
 
       setResults(data.data);
     } catch (err) {
+      console.error('Search error:', err);
       setError(err.message);
     } finally {
       setIsLoading(false);
