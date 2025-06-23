@@ -20,7 +20,8 @@ module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(405).end(JSON.stringify({ 
       success: false,
-      error: 'Method not allowed. Expected POST, got ' + req.method
+      error: 'Method not allowed. Expected POST, got ' + req.method,
+      xeinst_compatible: true
     }));
   }
 
@@ -32,7 +33,8 @@ module.exports = async (req, res) => {
       console.log('No request body found');
       return res.status(400).json({
         success: false,
-        error: 'Request body is required'
+        error: 'Request body is required',
+        xeinst_compatible: true
       });
     }
 
@@ -45,7 +47,8 @@ module.exports = async (req, res) => {
       console.log('Invalid query:', query);
       return res.status(400).json({
         success: false,
-        error: 'Query is required and must be a non-empty string'
+        error: 'Query is required and must be a non-empty string',
+        xeinst_compatible: true
       });
     }
 
@@ -58,7 +61,8 @@ module.exports = async (req, res) => {
         console.log('Validation failed:', validation.error);
         return res.status(400).json({
           success: false,
-          error: validation.error
+          error: validation.error,
+          xeinst_compatible: true
         });
       }
     } catch (validationError) {
@@ -66,7 +70,8 @@ module.exports = async (req, res) => {
       logger.error('Validation error', { error: validationError.message });
       return res.status(400).json({
         success: false,
-        error: 'Invalid input parameters'
+        error: 'Invalid input parameters',
+        xeinst_compatible: true
       });
     }
 
@@ -84,7 +89,8 @@ module.exports = async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to initialize scraper',
-        details: scraperError.message
+        details: scraperError.message,
+        xeinst_compatible: true
       });
     }
 
@@ -100,7 +106,8 @@ module.exports = async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to perform search and scrape',
-        details: scrapeError.message
+        details: scrapeError.message,
+        xeinst_compatible: true
       });
     }
 
@@ -110,7 +117,8 @@ module.exports = async (req, res) => {
       logger.error('Invalid results returned', { results });
       return res.status(500).json({
         success: false,
-        error: 'Invalid results returned from scraper'
+        error: 'Invalid results returned from scraper',
+        xeinst_compatible: true
       });
     }
 
@@ -123,7 +131,8 @@ module.exports = async (req, res) => {
     // Return successful response
     return res.status(200).json({
       success: true,
-      data: results
+      data: results,
+      xeinst_compatible: true
     });
 
   } catch (error) {
@@ -137,7 +146,8 @@ module.exports = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Internal server error',
-      details: error.message
+      details: error.message,
+      xeinst_compatible: true
     });
   }
 }; 

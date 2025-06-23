@@ -16,7 +16,8 @@ module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(405).end(JSON.stringify({ 
       success: false,
-      error: 'Method not allowed. Expected POST, got ' + req.method
+      error: 'Method not allowed. Expected POST, got ' + req.method,
+      xeinst_compatible: true
     }));
   }
 
@@ -29,7 +30,8 @@ module.exports = async (req, res) => {
       console.log('No request body found');
       return res.status(400).json({
         success: false,
-        error: 'Request body is required'
+        error: 'Request body is required',
+        xeinst_compatible: true
       });
     }
 
@@ -40,7 +42,8 @@ module.exports = async (req, res) => {
       console.log('Invalid query:', query);
       return res.status(400).json({
         success: false,
-        error: 'Query is required and must be a non-empty string'
+        error: 'Query is required and must be a non-empty string',
+        xeinst_compatible: true
       });
     }
 
@@ -85,7 +88,8 @@ module.exports = async (req, res) => {
     console.log('Returning mock results');
     return res.status(200).json({
       success: true,
-      data: mockResults
+      data: mockResults,
+      xeinst_compatible: true
     });
 
   } catch (error) {
@@ -93,7 +97,8 @@ module.exports = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Internal server error',
-      details: error.message
+      details: error.message,
+      xeinst_compatible: true
     });
   }
 }; 

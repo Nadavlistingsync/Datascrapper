@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed', xeinst_compatible: true });
   }
 
   try {
@@ -33,7 +33,8 @@ export default async function handler(req, res) {
       });
       return res.status(400).json({ 
         error: 'Invalid input', 
-        details: validation.errors 
+        details: validation.errors,
+        xeinst_compatible: true
       });
     }
 
@@ -102,7 +103,8 @@ export default async function handler(req, res) {
         totalResults: results.totalResults,
         enrichedLeads: results.enrichedLeads.length,
         timestamp: new Date().toISOString()
-      }
+      },
+      xeinst_compatible: true
     });
 
   } catch (error) {
@@ -114,13 +116,15 @@ export default async function handler(req, res) {
 
     if (error.message.includes('rate limit')) {
       return res.status(429).json({ 
-        error: 'Rate limit exceeded. Please try again later.' 
+        error: 'Rate limit exceeded. Please try again later.',
+        xeinst_compatible: true
       });
     }
 
     return res.status(500).json({ 
       error: 'Internal server error',
-      message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong',
+      xeinst_compatible: true
     });
   }
 } 
