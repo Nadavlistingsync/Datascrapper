@@ -29,22 +29,26 @@ export default function SearchEngine() {
     setResults(null);
 
     try {
-      console.log('Sending search request:', { query: query.trim(), maxResults, searchEngines });
+      const requestData = {
+        query: query.trim(),
+        maxResults: parseInt(maxResults),
+        searchEngines
+      };
+      
+      console.log('Sending search request:', requestData);
+      console.log('Request URL:', '/api/search-scrape');
       
       const response = await fetch('/api/search-scrape', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          query: query.trim(),
-          maxResults: parseInt(maxResults),
-          searchEngines
-        }),
+        body: JSON.stringify(requestData),
       });
 
       console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
+      console.log('Response status text:', response.statusText);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       // Check if response is ok
       if (!response.ok) {
