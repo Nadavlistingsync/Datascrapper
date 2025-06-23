@@ -25,6 +25,29 @@ const scrapeRequestSchema = Joi.object({
     })
 });
 
+const universalScrapeSchema = Joi.object({
+  url: Joi.string()
+    .uri()
+    .required()
+    .messages({
+      'string.uri': 'URL must be a valid URL',
+      'any.required': 'URL is required',
+      'string.empty': 'URL cannot be empty'
+    }),
+  selectors: Joi.object().default({}),
+  waitForSelector: Joi.string().allow(null, ''),
+  scrollToBottom: Joi.boolean().default(false),
+  maxScrolls: Joi.number().integer().min(1).max(20).default(5),
+  delayBetweenScrolls: Joi.number().integer().min(500).max(10000).default(2000),
+  extractText: Joi.boolean().default(true),
+  extractLinks: Joi.boolean().default(false),
+  extractImages: Joi.boolean().default(false),
+  extractTables: Joi.boolean().default(false),
+  customScript: Joi.string().allow(null, ''),
+  headers: Joi.object().default({}),
+  timeout: Joi.number().integer().min(5000).max(120000).default(30000)
+});
+
 function validateInput(data) {
   try {
     const { error, value } = scrapeRequestSchema.validate(data, {
@@ -73,6 +96,54 @@ function validateInput(data) {
   }
 }
 
+function validateUniversalInput(data) {
+  try {
+    const { error, value } = universalScrapeSchema.validate(data, {
+      abortEarly: false,
+      stripUnknown: true
+    });
+
+    if (error) {
+      const errors = error.details.map(detail => ({
+        field: detail.path.join('.'),
+        message: detail.message
+      }));
+
+      logger.warn('Universal validation failed', { 
+        errors, 
+        input: data 
+      });
+
+      return {
+        isValid: false,
+        errors,
+        data: null
+      };
+    }
+
+    return {
+      isValid: true,
+      errors: [],
+      data: value
+    };
+
+  } catch (validationError) {
+    logger.error('Universal validation error', { 
+      error: validationError.message,
+      input: data 
+    });
+
+    return {
+      isValid: false,
+      errors: [{
+        field: 'validation',
+        message: 'Internal validation error'
+      }],
+      data: null
+    };
+  }
+}
+
 function sanitizeSearchQuery(query) {
   if (!query || typeof query !== 'string') {
     return '';
@@ -88,5 +159,6 @@ function sanitizeSearchQuery(query) {
 
 module.exports = {
   validateInput,
+  validateUniversalInput,
   sanitizeSearchQuery
 }; 

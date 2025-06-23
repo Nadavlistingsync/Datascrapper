@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -88,8 +89,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Head>
-        <title>LinkedIn Profile Scraper - B2B Lead Generation</title>
-        <meta name="description" content="High-quality LinkedIn profile scraper for B2B lead generation" />
+        <title>Data Scraper Suite - LinkedIn & Universal Web Scraping</title>
+        <meta name="description" content="High-quality web scrapers for LinkedIn profiles and universal website data extraction" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -97,63 +98,81 @@ export default function Home() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            LinkedIn Profile Scraper
+            Data Scraper Suite
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Generate high-quality B2B lead lists from LinkedIn search results. 
-            Extract professional profiles based on roles, companies, or industries.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Professional web scraping tools for B2B lead generation and universal data extraction. 
+            Extract LinkedIn profiles and scrape data from any website that allows scraping.
           </p>
+          
+          {/* Navigation */}
+          <div className="flex justify-center space-x-4 mb-8">
+            <Link href="/" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+              LinkedIn Scraper
+            </Link>
+            <Link href="/universal-scraper" className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+              Universal Scraper
+            </Link>
+          </div>
         </div>
 
-        {/* Search Form */}
+        {/* LinkedIn Scraper Section */}
         <div className="max-w-2xl mx-auto mb-8">
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6">
-            <div className="mb-6">
-              <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-700 mb-2">
-                Search Query
-              </label>
-              <input
-                type="text"
-                id="searchQuery"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="e.g., real estate agents in Miami, software engineers at Google"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled={isLoading}
-              />
-            </div>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">LinkedIn Profile Scraper</h2>
+            <p className="text-gray-600 mb-6">
+              Generate high-quality B2B lead lists from LinkedIn search results. 
+              Extract professional profiles based on roles, companies, or industries.
+            </p>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-700 mb-2">
+                  Search Query
+                </label>
+                <input
+                  type="text"
+                  id="searchQuery"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="e.g., real estate agents in Miami, software engineers at Google"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  disabled={isLoading}
+                />
+              </div>
 
-            <div className="mb-6">
-              <label htmlFor="maxProfiles" className="block text-sm font-medium text-gray-700 mb-2">
-                Maximum Profiles (1-100)
-              </label>
-              <input
-                type="number"
-                id="maxProfiles"
-                value={maxProfiles}
-                onChange={(e) => setMaxProfiles(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
-                min="1"
-                max="100"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled={isLoading}
-              />
-            </div>
+              <div className="mb-6">
+                <label htmlFor="maxProfiles" className="block text-sm font-medium text-gray-700 mb-2">
+                  Maximum Profiles (1-100)
+                </label>
+                <input
+                  type="number"
+                  id="maxProfiles"
+                  value={maxProfiles}
+                  onChange={(e) => setMaxProfiles(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
+                  min="1"
+                  max="100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  disabled={isLoading}
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Scraping Profiles...
-                </div>
-              ) : (
-                'Start Scraping'
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Scraping Profiles...
+                  </div>
+                ) : (
+                  'Start LinkedIn Scraping'
+                )}
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Error Display */}
@@ -259,13 +278,40 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Features Section */}
+        <div className="max-w-6xl mx-auto mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">LinkedIn Scraper Features</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Extract professional profiles from LinkedIn search</li>
+                <li>• B2B lead generation with contact information</li>
+                <li>• CSV export for easy data management</li>
+                <li>• Rate limiting and ethical scraping</li>
+                <li>• Real-time progress tracking</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Universal Scraper Features</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Scrape any website that allows scraping</li>
+                <li>• CSS selector-based data extraction</li>
+                <li>• Extract text, links, images, and tables</li>
+                <li>• Custom JavaScript execution</li>
+                <li>• JSON and CSV export options</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
       <footer className="mt-16 py-8 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-600">
-            Built with ❤️ for B2B lead generation | 
+            Data Scraper Suite | Built with ❤️ for data extraction | 
             <a href="https://github.com/Nadavlistingsync/Datascrapper" 
                target="_blank" 
                rel="noopener noreferrer"
