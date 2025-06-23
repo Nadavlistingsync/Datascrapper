@@ -1,7 +1,7 @@
-const { SearchScraper } = require('../../utils/search-scraper');
-const { logger } = require('../../utils/logger');
+import { SearchScraper } from '../../utils/search-scraper';
+import { logger } from '../../utils/logger';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -52,4 +52,4 @@ module.exports = async (req, res) => {
       details: error.message
     });
   }
-}; 
+} 

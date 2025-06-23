@@ -379,4 +379,4 @@ class UniversalScraper {
   }
 }
 
-module.exports = { UniversalScraper }; 
+export { UniversalScraper }; 

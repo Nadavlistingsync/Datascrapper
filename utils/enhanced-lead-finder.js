@@ -322,4 +322,4 @@ class EnhancedLeadFinder {
   }
 }
 
-module.exports = { EnhancedLeadFinder }; 
+export { EnhancedLeadFinder }; 

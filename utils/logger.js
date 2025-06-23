@@ -1,4 +1,4 @@
-const winston = require('winston');
+import winston from 'winston';
 
 // Custom format for structured logging
 const logFormat = winston.format.combine(
@@ -119,7 +119,7 @@ function getScrapingMetrics() {
   return { ...scrapingMetrics };
 }
 
-module.exports = {
+export {
   logger,
   startPerformanceTimer,
   endPerformanceTimer,

@@ -288,4 +288,4 @@ class LinkedInScraper {
   }
 }
 
-module.exports = { LinkedInScraper }; 
+export { LinkedInScraper }; 

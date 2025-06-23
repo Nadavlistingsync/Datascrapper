@@ -1,4 +1,4 @@
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   console.log('Simple API endpoint reached:', req.method, req.url);
   
   // Set CORS headers
@@ -101,4 +101,4 @@ module.exports = async (req, res) => {
       xeinst_compatible: true
     });
   }
-}; 
+} 

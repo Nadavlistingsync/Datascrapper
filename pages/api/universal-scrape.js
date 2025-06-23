@@ -1,7 +1,7 @@
-const { UniversalScraper } = require('../../utils/universal-scraper');
-const { validateUniversalInput } = require('../../utils/validation');
-const { logger } = require('../../utils/logger');
-const { rateLimiter } = require('../../utils/rate-limiter');
+import { UniversalScraper } from '../../utils/universal-scraper';
+import { validateUniversalInput } from '../../utils/validation';
+import { logger } from '../../utils/logger';
+import { rateLimiter } from '../../utils/rate-limiter';
 
 export default async function handler(req, res) {
   // Set CORS headers

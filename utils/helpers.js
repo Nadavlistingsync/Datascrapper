@@ -138,7 +138,7 @@ function throttle(func, limit) {
   };
 }
 
-module.exports = {
+export {
   delay,
   randomDelay,
   retry,

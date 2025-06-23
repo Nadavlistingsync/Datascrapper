@@ -1,6 +1,6 @@
-const { SearchScraper } = require('../../utils/search-scraper');
-const { validateSearchQuery } = require('../../utils/validation');
-const { logger } = require('../../utils/logger');
+import { SearchScraper } from '../../utils/search-scraper';
+import { validateSearchQuery } from '../../utils/validation';
+import { logger } from '../../utils/logger';
 
 export default async function handler(req, res) {
   console.log('API endpoint reached:', req.method, req.url);

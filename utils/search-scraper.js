@@ -289,4 +289,4 @@ class SearchScraper {
   }
 }
 
-module.exports = { SearchScraper }; 
+export { SearchScraper }; 

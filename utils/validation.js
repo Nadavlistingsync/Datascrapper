@@ -1,5 +1,5 @@
-const Joi = require('joi');
-const { logger } = require('./logger');
+import Joi from 'joi';
+import { logger } from './logger.js';
 
 const scrapeRequestSchema = Joi.object({
   search_query: Joi.string()
@@ -277,7 +277,7 @@ function validateSearchQuery(query, maxResults, searchEngines) {
   return { isValid: true };
 }
 
-module.exports = {
+export {
   validateInput,
   validateUniversalInput,
   validateEnhancedLinkedInInput,
