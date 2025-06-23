@@ -147,8 +147,10 @@ class SearchScraper {
   async scrapeWebsite({ url, selectors = {}, extractText = false, extractLinks = false, extractImages = false, extractTables = false, timeout = 30000 }) {
     let browser;
     try {
+      const executablePath = process.env.CHROME_BIN || '/usr/bin/google-chrome-stable';
       browser = await puppeteer.launch({
         headless: true,
+        executablePath,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -216,24 +218,10 @@ class SearchScraper {
         success: true,
         data
       };
-
     } catch (error) {
-      if (browser) {
-        await browser.close();
-      }
-      
-      logger.error('Error scraping website', { url, error: error.message });
-      
-      return {
-        success: false,
-        error: error.message,
-        data: {
-          allText: '',
-          allLinks: [],
-          allImages: [],
-          allTables: []
-        }
-      };
+      if (browser) await browser.close();
+      logger.error('Error scraping website', { error: error.message, url });
+      return { success: false, error: error.message };
     }
   }
 
@@ -273,16 +261,6 @@ class SearchScraper {
     return text.substring(start, end) + '...';
   }
 
-  removeDuplicates(results) {
-    const seen = new Set();
-    return results.filter(result => {
-      const key = result.url;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  }
-
   isValidUrl(url) {
     try {
       new URL(url);
@@ -299,6 +277,15 @@ class SearchScraper {
 
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  removeDuplicates(results) {
+    const seen = new Set();
+    return results.filter(result => {
+      if (seen.has(result.url)) return false;
+      seen.add(result.url);
+      return true;
+    });
   }
 }
 
