@@ -1,10 +1,8 @@
-const { UniversalScraper } = require('./universal-scraper');
+const puppeteer = require('puppeteer-core');
 const { logger } = require('./logger');
-const { delay } = require('./helpers');
 
 class SearchScraper {
   constructor() {
-    this.universalScraper = new UniversalScraper();
     this.searchEngines = {
       google: {
         url: 'https://www.google.com/search',
@@ -82,7 +80,7 @@ class SearchScraper {
         const searchUrl = this.buildSearchUrl(engineConfig, query);
         logger.info(`Searching ${engine}`, { url: searchUrl });
 
-        const searchData = await this.universalScraper.scrapeWebsite({
+        const searchData = await this.scrapeWebsite({
           url: searchUrl,
           selectors: engineConfig.selectors,
           extractLinks: true,
@@ -95,7 +93,7 @@ class SearchScraper {
           allResults.push(...engineResults);
         }
 
-        await delay(2000); // Be respectful to search engines
+        await this.delay(2000); // Be respectful to search engines
 
       } catch (error) {
         logger.error(`Error searching ${engine}`, { error: error.message });
@@ -117,7 +115,7 @@ class SearchScraper {
 
         logger.info(`Scraping website`, { url: result.url });
 
-        const scrapedData = await this.universalScraper.scrapeWebsite({
+        const scrapedData = await this.scrapeWebsite({
           url: result.url,
           extractText: true,
           extractLinks: true,
@@ -136,7 +134,7 @@ class SearchScraper {
           });
         }
 
-        await delay(3000); // Be respectful to websites
+        await this.delay(3000); // Be respectful to websites
 
       } catch (error) {
         logger.error(`Error scraping website`, { url: result.url, error: error.message });
@@ -144,6 +142,99 @@ class SearchScraper {
     }
 
     return scrapedSites;
+  }
+
+  async scrapeWebsite({ url, selectors = {}, extractText = false, extractLinks = false, extractImages = false, extractTables = false, timeout = 30000 }) {
+    let browser;
+    try {
+      browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process',
+          '--disable-gpu'
+        ]
+      });
+
+      const page = await browser.newPage();
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+      await page.setViewport({ width: 1366, height: 768 });
+
+      await page.goto(url, { waitUntil: 'networkidle2', timeout });
+
+      const data = {};
+
+      if (extractText) {
+        data.allText = await page.evaluate(() => {
+          return document.body.innerText || '';
+        });
+      }
+
+      if (extractLinks) {
+        data.allLinks = await page.evaluate(() => {
+          const links = Array.from(document.querySelectorAll('a[href]'));
+          return links.map(link => ({
+            href: link.href,
+            text: link.textContent?.trim() || '',
+            title: link.title || ''
+          })).filter(link => link.href && !link.href.startsWith('javascript:'));
+        });
+      }
+
+      if (extractImages) {
+        data.allImages = await page.evaluate(() => {
+          const images = Array.from(document.querySelectorAll('img'));
+          return images.map(img => ({
+            src: img.src,
+            alt: img.alt || '',
+            title: img.title || ''
+          })).filter(img => img.src);
+        });
+      }
+
+      if (extractTables) {
+        data.allTables = await page.evaluate(() => {
+          const tables = Array.from(document.querySelectorAll('table'));
+          return tables.map(table => {
+            const rows = Array.from(table.querySelectorAll('tr'));
+            return rows.map(row => {
+              const cells = Array.from(row.querySelectorAll('td, th'));
+              return cells.map(cell => cell.textContent?.trim() || '');
+            });
+          });
+        });
+      }
+
+      await browser.close();
+
+      return {
+        success: true,
+        data
+      };
+
+    } catch (error) {
+      if (browser) {
+        await browser.close();
+      }
+      
+      logger.error('Error scraping website', { url, error: error.message });
+      
+      return {
+        success: false,
+        error: error.message,
+        data: {
+          allText: '',
+          allLinks: [],
+          allImages: [],
+          allTables: []
+        }
+      };
+    }
   }
 
   buildSearchUrl(engineConfig, query) {
@@ -204,6 +295,10 @@ class SearchScraper {
   isSearchEngineUrl(url) {
     const searchEngines = ['google.com', 'bing.com', 'duckduckgo.com', 'yahoo.com'];
     return searchEngines.some(engine => url.includes(engine));
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
