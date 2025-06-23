@@ -157,8 +157,39 @@ function sanitizeSearchQuery(query) {
     .trim();
 }
 
+function validateSearchQuery(query, maxResults, searchEngines) {
+  if (!query || typeof query !== 'string' || query.trim().length === 0) {
+    return { isValid: false, error: 'Search query is required and must be a non-empty string' };
+  }
+
+  if (query.trim().length < 2) {
+    return { isValid: false, error: 'Search query must be at least 2 characters long' };
+  }
+
+  if (query.trim().length > 500) {
+    return { isValid: false, error: 'Search query must be less than 500 characters' };
+  }
+
+  if (!Number.isInteger(maxResults) || maxResults < 1 || maxResults > 50) {
+    return { isValid: false, error: 'Max results must be an integer between 1 and 50' };
+  }
+
+  if (!Array.isArray(searchEngines) || searchEngines.length === 0) {
+    return { isValid: false, error: 'Search engines must be a non-empty array' };
+  }
+
+  const validEngines = ['google', 'bing', 'duckduckgo'];
+  const invalidEngines = searchEngines.filter(engine => !validEngines.includes(engine));
+  if (invalidEngines.length > 0) {
+    return { isValid: false, error: `Invalid search engines: ${invalidEngines.join(', ')}` };
+  }
+
+  return { isValid: true };
+}
+
 module.exports = {
   validateInput,
   validateUniversalInput,
-  sanitizeSearchQuery
+  sanitizeSearchQuery,
+  validateSearchQuery
 }; 

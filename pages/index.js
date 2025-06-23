@@ -105,13 +105,30 @@ export default function Home() {
             Extract LinkedIn profiles and scrape data from any website that allows scraping.
           </p>
           
-          {/* Navigation */}
-          <div className="flex justify-center space-x-4 mb-8">
-            <Link href="/" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-              LinkedIn Scraper
+          {/* Navigation Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Link href="/linkedin-scraper" className="group">
+              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
+                <div className="text-3xl mb-4">💼</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">LinkedIn Scraper</h3>
+                <p className="text-gray-600">Extract B2B leads from LinkedIn with advanced search parameters</p>
+              </div>
             </Link>
-            <Link href="/universal-scraper" className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
-              Universal Scraper
+
+            <Link href="/universal-scraper" className="group">
+              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
+                <div className="text-3xl mb-4">🌐</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Universal Scraper</h3>
+                <p className="text-gray-600">Scrape any website with customizable selectors and options</p>
+              </div>
+            </Link>
+
+            <Link href="/search-engine" className="group">
+              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
+                <div className="text-3xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Search Engine</h3>
+                <p className="text-gray-600">Search across multiple engines and automatically scrape results</p>
+              </div>
             </Link>
           </div>
         </div>
