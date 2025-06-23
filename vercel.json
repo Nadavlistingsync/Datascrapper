@@ -3,10 +3,31 @@
   "functions": {
     "pages/api/scrape.js": {
       "maxDuration": 60
+    },
+    "pages/api/search-scrape.js": {
+      "maxDuration": 60
+    },
+    "pages/api/universal-scrape.js": {
+      "maxDuration": 60
+    },
+    "pages/api/health.js": {
+      "maxDuration": 10
+    },
+    "pages/api/test-search.js": {
+      "maxDuration": 60
+    },
+    "pages/api/debug.js": {
+      "maxDuration": 10
     }
   },
   "env": {
     "NODE_ENV": "production",
     "CHROME_BIN": "/usr/bin/google-chrome-stable"
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/search-scrape",
+      "destination": "/api/search-scrape.js"
+    }
+  ]
 } 

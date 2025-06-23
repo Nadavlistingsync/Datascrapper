@@ -102,6 +102,36 @@ export default function SearchEngine() {
     );
   };
 
+  const testAPI = async () => {
+    try {
+      console.log('Testing API connectivity...');
+      
+      // Test debug endpoint
+      const debugResponse = await fetch('/api/debug', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ test: 'data' }),
+      });
+      
+      console.log('Debug response status:', debugResponse.status);
+      const debugData = await debugResponse.json();
+      console.log('Debug response:', debugData);
+      
+      // Test health endpoint
+      const healthResponse = await fetch('/api/health');
+      console.log('Health response status:', healthResponse.status);
+      const healthData = await healthResponse.json();
+      console.log('Health response:', healthData);
+      
+      alert('API test completed! Check console for details.');
+    } catch (error) {
+      console.error('API test failed:', error);
+      alert('API test failed: ' + error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Head>
@@ -122,6 +152,14 @@ export default function SearchEngine() {
             <p className="text-sm text-gray-500">
               Works for SMMA, real estate, local businesses, and more
             </p>
+            
+            {/* Debug Button */}
+            <button
+              onClick={testAPI}
+              className="mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+            >
+              🔧 Test API Connectivity
+            </button>
           </div>
 
           {/* Search Form */}
