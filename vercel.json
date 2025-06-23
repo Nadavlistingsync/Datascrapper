@@ -1,6 +1,12 @@
 {
   "framework": "nextjs",
+  "functions": {
+    "pages/api/scrape.js": {
+      "maxDuration": 60
+    }
+  },
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "CHROME_BIN": "/usr/bin/google-chrome-stable"
   }
 } 
