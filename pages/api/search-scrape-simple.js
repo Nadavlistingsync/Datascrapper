@@ -13,11 +13,11 @@ module.exports = async (req, res) => {
   }
 
   if (req.method !== 'POST') {
-    console.log('Method not allowed:', req.method);
-    return res.status(405).json({ 
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(405).end(JSON.stringify({ 
       success: false,
       error: 'Method not allowed. Expected POST, got ' + req.method
-    });
+    }));
   }
 
   console.log('Processing POST request');
