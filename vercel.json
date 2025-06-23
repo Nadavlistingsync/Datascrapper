@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/scrape.js": {
+      "maxDuration": 300
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+} 
