@@ -106,7 +106,7 @@ export default function Home() {
           </p>
           
           {/* Navigation Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <Link href="/linkedin-scraper" className="group">
               <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
                 <div className="text-3xl mb-4">💼</div>
@@ -115,19 +115,11 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/universal-scraper" className="group">
-              <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
-                <div className="text-3xl mb-4">🌐</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Universal Scraper</h3>
-                <p className="text-gray-600">Scrape any website with customizable selectors and options</p>
-              </div>
-            </Link>
-
             <Link href="/search-engine" className="group">
               <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer">
                 <div className="text-3xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Search Engine</h3>
-                <p className="text-gray-600">Search across multiple engines and automatically scrape results</p>
+                <p className="text-gray-600">Search for anything and automatically scrape relevant websites</p>
               </div>
             </Link>
           </div>
