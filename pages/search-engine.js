@@ -132,6 +132,48 @@ export default function SearchEngine() {
     }
   };
 
+  const testSimpleAPI = async () => {
+    try {
+      console.log('Testing simple API...');
+      
+      const requestData = {
+        query: 'test business leads',
+        maxResults: 5,
+        searchEngines: ['google']
+      };
+      
+      const response = await fetch('/api/search-scrape-simple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      console.log('Simple API response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Simple API error:', errorText);
+        alert('Simple API failed: ' + response.status);
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Simple API response:', data);
+      
+      if (data.success) {
+        alert('Simple API works! Found ' + data.data.totalResults + ' results');
+        setResults(data.data);
+      } else {
+        alert('Simple API returned error: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Simple API test failed:', error);
+      alert('Simple API test failed: ' + error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Head>
@@ -153,13 +195,21 @@ export default function SearchEngine() {
               Works for SMMA, real estate, local businesses, and more
             </p>
             
-            {/* Debug Button */}
-            <button
-              onClick={testAPI}
-              className="mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm"
-            >
-              🔧 Test API Connectivity
-            </button>
+            {/* Debug Buttons */}
+            <div className="mt-4 space-x-2">
+              <button
+                onClick={testAPI}
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+              >
+                🔧 Test API Connectivity
+              </button>
+              <button
+                onClick={testSimpleAPI}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm"
+              >
+                🧪 Test Simple API
+              </button>
+            </div>
           </div>
 
           {/* Search Form */}

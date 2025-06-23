@@ -7,6 +7,9 @@
     "pages/api/search-scrape.js": {
       "maxDuration": 60
     },
+    "pages/api/search-scrape-simple.js": {
+      "maxDuration": 30
+    },
     "pages/api/universal-scrape.js": {
       "maxDuration": 60
     },
@@ -28,6 +31,10 @@
     {
       "source": "/api/search-scrape",
       "destination": "/api/search-scrape.js"
+    },
+    {
+      "source": "/api/search-scrape-simple",
+      "destination": "/api/search-scrape-simple.js"
     }
   ]
 } 
