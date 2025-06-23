@@ -16,7 +16,7 @@ const logger = winston.createLogger({
     environment: process.env.NODE_ENV || 'development'
   },
   transports: [
-    // Console transport for development
+    // Console transport for all environments
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
@@ -25,17 +25,6 @@ const logger = winston.createLogger({
     })
   ]
 });
-
-// Add file transport for production
-if (process.env.NODE_ENV === 'production') {
-  logger.add(new winston.transports.File({ 
-    filename: 'logs/error.log', 
-    level: 'error' 
-  }));
-  logger.add(new winston.transports.File({ 
-    filename: 'logs/combined.log' 
-  }));
-}
 
 // Create a stream for Morgan HTTP logging
 logger.stream = {

@@ -1,9 +1,9 @@
-import puppeteer from 'puppeteer';
-import UserAgent from 'user-agents';
-import { logger } from './logger';
-import { delay, randomDelay } from './helpers';
+const puppeteer = require('puppeteer');
+const UserAgent = require('user-agents');
+const { logger } = require('./logger');
+const { delay, randomDelay } = require('./helpers');
 
-export class LinkedInScraper {
+class LinkedInScraper {
   constructor() {
     this.browser = null;
     this.page = null;
@@ -32,7 +32,9 @@ export class LinkedInScraper {
           '--disable-renderer-backgrounding',
           '--disable-features=TranslateUI',
           '--disable-ipc-flooding-protection',
-          '--window-size=1920,1080'
+          '--window-size=1920,1080',
+          '--single-process',
+          '--disable-extensions'
         ]
       });
 
@@ -54,7 +56,7 @@ export class LinkedInScraper {
         'Upgrade-Insecure-Requests': '1'
       });
 
-      // Block unnecessary resources
+      // Block unnecessary resources for faster loading
       await this.page.setRequestInterception(true);
       this.page.on('request', (req) => {
         if (['image', 'stylesheet', 'font', 'media'].includes(req.resourceType())) {
@@ -244,4 +246,6 @@ export class LinkedInScraper {
       logger.error('Error during cleanup', { error: error.message });
     }
   }
-} 
+}
+
+module.exports = { LinkedInScraper }; 
