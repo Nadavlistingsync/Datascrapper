@@ -1,6 +1,6 @@
-# LinkedIn Profile Scraper - B2B Lead Generation
+# Data Scraper API - Webhook Service
 
-A high-quality web scraper that extracts public LinkedIn profile data using search parameters for B2B lead generation. Built with Next.js, Puppeteer, and deployed on Vercel.
+A high-quality web scraping API service for B2B lead generation and universal data extraction. Built with Next.js, Puppeteer, and deployed on Vercel. This is a pure API service designed for webhook integration.
 
 ## 🚀 Features
 
@@ -9,8 +9,8 @@ A high-quality web scraper that extracts public LinkedIn profile data using sear
 - **Input Validation**: Comprehensive validation with Joi schema
 - **Error Handling**: Robust error handling with automatic retries and feedback loops
 - **Real-time Logging**: Winston-based logging with performance monitoring
-- **Modern UI**: Beautiful, responsive frontend with real-time feedback
-- **CSV Export**: Download scraped data in CSV format
+- **API-First Design**: Pure REST API service optimized for webhook integration
+- **Multiple Scrapers**: LinkedIn profile scraper and universal web scraper
 - **Health Monitoring**: Built-in health check endpoint
 - **Vercel Ready**: Optimized for Vercel deployment
 
@@ -45,8 +45,8 @@ A high-quality web scraper that extracts public LinkedIn profile data using sear
    npm run dev
    ```
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+5. **Test the API**
+   Navigate to [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
 ## 🚀 Deployment to Vercel
 
@@ -66,9 +66,15 @@ A high-quality web scraper that extracts public LinkedIn profile data using sear
    - `NODE_ENV=production`
    - `LOG_LEVEL=info`
 
-## 📖 Usage
+## 📖 API Usage
 
-### API Endpoint
+### Health Check
+
+**GET** `/api/health`
+
+Returns system health and metrics information.
+
+### LinkedIn Profile Scraper
 
 **POST** `/api/scrape`
 
@@ -104,26 +110,56 @@ A high-quality web scraper that extracts public LinkedIn profile data using sear
 }
 ```
 
-### Health Check
+### Enhanced LinkedIn Scraper
 
-**GET** `/api/health`
+**POST** `/api/enhanced-linkedin-scrape`
 
-Returns system health and metrics information.
+Advanced LinkedIn scraping with additional parameters.
+
+### Universal Web Scraper
+
+**POST** `/api/universal-scrape`
+
+Scrape any website with custom selectors.
+
+### Search Engine Scraper
+
+**POST** `/api/search-scrape`
+
+Search for content and automatically scrape relevant websites.
+
+### Debug Endpoint
+
+**POST** `/api/debug`
+
+Debug and test scraping functionality.
 
 ## 🏗️ Project Structure
 
 ```
 ├── pages/
 │   ├── api/
-│   │   ├── scrape.js      # Main scraping endpoint
-│   │   └── health.js      # Health check endpoint
-│   └── index.js           # Frontend interface
+│   │   ├── scrape.js                    # Main LinkedIn scraping endpoint
+│   │   ├── enhanced-linkedin-scrape.js  # Enhanced LinkedIn scraper
+│   │   ├── universal-scrape.js          # Universal web scraper
+│   │   ├── search-scrape.js             # Search engine scraper
+│   │   ├── search-scrape-simple.js      # Simple search scraper
+│   │   ├── debug.js                     # Debug endpoint
+│   │   ├── health.js                    # Health check endpoint
+│   │   ├── test-search.js               # Test search endpoint
+│   │   └── xeinst-docs.js               # Documentation endpoint
+│   └── index.js                         # API redirect page
 ├── utils/
-│   ├── linkedin-scraper.js # Core scraping logic
-│   ├── validation.js      # Input validation
-│   ├── logger.js          # Logging and metrics
-│   ├── rate-limiter.js    # Rate limiting
-│   └── helpers.js         # Utility functions
+│   ├── linkedin-scraper.js              # Core LinkedIn scraping logic
+│   ├── enhanced-lead-finder.js          # Enhanced lead finding
+│   ├── universal-scraper.js             # Universal scraping logic
+│   ├── search-scraper.js                # Search scraping logic
+│   ├── validation.js                    # Input validation
+│   ├── logger.js                        # Logging and metrics
+│   ├── rate-limiter.js                  # Rate limiting
+│   └── helpers.js                       # Utility functions
+├── __tests__/
+│   └── scraper.test.js                  # Test files
 ├── package.json
 ├── next.config.js
 ├── vercel.json

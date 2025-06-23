@@ -1,7 +1,7 @@
 {
-  "name": "linkedin-scraper",
+  "name": "data-scraper-api",
   "version": "1.0.0",
-  "description": "High-quality LinkedIn profile scraper for B2B lead generation",
+  "description": "High-quality web scraping API for B2B lead generation and universal data extraction",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -14,8 +14,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.7",
-    "autoprefixer": "^10.4.16",
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
@@ -23,13 +21,11 @@
     "helmet": "^7.1.0",
     "joi": "^17.11.0",
     "next": "^14.0.0",
-    "postcss": "^8.4.31",
     "proxy-agent": "^6.3.0",
     "puppeteer-core": "^21.5.0",
     "rate-limiter-flexible": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^3.3.0",
     "user-agents": "^1.0.35",
     "winston": "^3.11.0"
   },
@@ -47,13 +43,14 @@
     "typescript": "^5.2.0"
   },
   "keywords": [
-    "linkedin",
+    "api",
     "scraper",
     "b2b",
     "leads",
     "vercel",
     "puppeteer",
-    "nextjs"
+    "nextjs",
+    "webhook"
   ],
   "author": "Nadav Benedek",
   "license": "MIT",
