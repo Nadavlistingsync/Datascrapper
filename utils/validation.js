@@ -48,6 +48,48 @@ const universalScrapeSchema = Joi.object({
   timeout: Joi.number().integer().min(5000).max(120000).default(30000)
 });
 
+const enhancedLinkedInSchema = Joi.object({
+  keywords: Joi.string()
+    .min(2)
+    .max(200)
+    .required()
+    .messages({
+      'string.min': 'Keywords must be at least 2 characters long',
+      'string.max': 'Keywords must be less than 200 characters',
+      'any.required': 'Keywords are required',
+      'string.empty': 'Keywords cannot be empty'
+    }),
+  location: Joi.string()
+    .max(100)
+    .allow('', null)
+    .messages({
+      'string.max': 'Location must be less than 100 characters'
+    }),
+  industry: Joi.string()
+    .max(100)
+    .allow('', null)
+    .messages({
+      'string.max': 'Industry must be less than 100 characters'
+    }),
+  companySize: Joi.string()
+    .max(50)
+    .allow('', null)
+    .messages({
+      'string.max': 'Company size must be less than 50 characters'
+    }),
+  maxResults: Joi.number()
+    .integer()
+    .min(1)
+    .max(100)
+    .default(10)
+    .messages({
+      'number.base': 'Max results must be a number',
+      'number.integer': 'Max results must be an integer',
+      'number.min': 'Max results must be at least 1',
+      'number.max': 'Max results cannot exceed 100'
+    })
+});
+
 function validateInput(data) {
   try {
     const { error, value } = scrapeRequestSchema.validate(data, {
@@ -144,6 +186,54 @@ function validateUniversalInput(data) {
   }
 }
 
+function validateEnhancedLinkedInInput(data) {
+  try {
+    const { error, value } = enhancedLinkedInSchema.validate(data, {
+      abortEarly: false,
+      stripUnknown: true
+    });
+
+    if (error) {
+      const errors = error.details.map(detail => ({
+        field: detail.path.join('.'),
+        message: detail.message
+      }));
+
+      logger.warn('Enhanced LinkedIn validation failed', { 
+        errors, 
+        input: data 
+      });
+
+      return {
+        isValid: false,
+        errors,
+        data: null
+      };
+    }
+
+    return {
+      isValid: true,
+      errors: [],
+      data: value
+    };
+
+  } catch (validationError) {
+    logger.error('Enhanced LinkedIn validation error', { 
+      error: validationError.message,
+      input: data 
+    });
+
+    return {
+      isValid: false,
+      errors: [{
+        field: 'validation',
+        message: 'Internal validation error'
+      }],
+      data: null
+    };
+  }
+}
+
 function sanitizeSearchQuery(query) {
   if (!query || typeof query !== 'string') {
     return '';
@@ -190,6 +280,7 @@ function validateSearchQuery(query, maxResults, searchEngines) {
 module.exports = {
   validateInput,
   validateUniversalInput,
+  validateEnhancedLinkedInInput,
   sanitizeSearchQuery,
   validateSearchQuery
 }; 
