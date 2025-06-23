@@ -1,6 +1,6 @@
 const { UniversalScraper } = require('../../utils/universal-scraper');
 const { validateUniversalInput } = require('../../utils/validation');
-const { logger } = require('../../logger');
+const { logger } = require('../../utils/logger');
 const { rateLimiter } = require('../../utils/rate-limiter');
 
 export default async function handler(req, res) {
